@@ -72,6 +72,11 @@ func (officialAccount *OfficialAccount) GetAccessToken() (string, error) {
 	return officialAccount.ctx.GetAccessToken()
 }
 
+// MustCacheAccessToken 强制缓存access_token 用于主动刷新
+func (officialAccount *OfficialAccount) MustCacheAccessToken() (int64, error) {
+	return officialAccount.ctx.MustCacheAccessToken()
+}
+
 // GetOauth oauth2网页授权
 func (officialAccount *OfficialAccount) GetOauth() *oauth.Oauth {
 	return oauth.NewOauth(officialAccount.ctx)

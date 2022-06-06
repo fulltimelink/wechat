@@ -87,6 +87,21 @@ func (ak *DefaultAccessToken) GetAccessToken() (accessToken string, err error) {
 	return
 }
 
+// MustCacheAccessToken 强制更新accesstoken并缓存-用于主动刷新AccessToken
+func (ak *DefaultAccessToken) MustCacheAccessToken() (expireIn int64, err error) {
+	accessTokenCacheKey := fmt.Sprintf("%s_access_token_%s", ak.cacheKeyPrefix, ak.appID)
+
+	var resAccessToken ResAccessToken
+	resAccessToken, err = GetTokenFromServer(fmt.Sprintf(accessTokenURL, ak.appID, ak.appSecret))
+	if err != nil {
+		return
+	}
+
+	expireIn = resAccessToken.ExpiresIn - 300
+	err = ak.cache.Set(accessTokenCacheKey, resAccessToken.AccessToken, time.Duration(expireIn)*time.Second)
+	return
+}
+
 // WorkAccessToken 企业微信AccessToken 获取
 type WorkAccessToken struct {
 	CorpID          string

@@ -67,6 +67,21 @@ func (js *DefaultJsTicket) GetTicket(accessToken string) (ticketStr string, err 
 	return
 }
 
+// MustCacheTicket 强制更新jsticket并缓存-用于主动刷新jsticket
+func (js *DefaultJsTicket) MustCacheTicket(accessToken string) (expireIn int64, err error) {
+
+	jsAPITicketCacheKey := fmt.Sprintf("%s_jsapi_ticket_%s", js.cacheKeyPrefix, js.appID)
+
+	var ticket ResTicket
+	ticket, err = GetTicketFromServer(accessToken)
+	if err != nil {
+		return
+	}
+	expireIn = ticket.ExpiresIn - 300
+	err = js.cache.Set(jsAPITicketCacheKey, ticket.Ticket, time.Duration(expireIn)*time.Second)
+	return
+}
+
 // GetTicketFromServer 从服务器中获取ticket
 func GetTicketFromServer(accessToken string) (ticket ResTicket, err error) {
 	var response []byte

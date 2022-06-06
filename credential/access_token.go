@@ -4,3 +4,7 @@ package credential
 type AccessTokenHandle interface {
 	GetAccessToken() (accessToken string, err error)
 }
+
+type MustCacheHandle interface {
+	MustCacheAccessToken() (expireIn int64, err error)
+}

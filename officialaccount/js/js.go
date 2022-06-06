@@ -12,6 +12,7 @@ import (
 type Js struct {
 	*context.Context
 	credential.JsTicketHandle
+	credential.MustCacheJsTicketHandle
 }
 
 // Config 返回给用户jssdk配置信息
@@ -61,4 +62,9 @@ func (js *Js) GetConfig(uri string) (config *Config, err error) {
 	config.Timestamp = timestamp
 	config.Signature = sigStr
 	return
+}
+
+// MustCacheJsTicket 强制缓存jsticket 用于主动刷新
+func (js *Js) MustCacheJsTicket(accessToken string) (int64, error) {
+	return js.MustCacheTicket(accessToken)
 }
