@@ -32,9 +32,12 @@ type OfficialAccount struct {
 // NewOfficialAccount 实例化公众号API
 func NewOfficialAccount(cfg *config.Config) *OfficialAccount {
 	defaultAkHandle := credential.NewDefaultAccessToken(cfg.AppID, cfg.AppSecret, credential.CacheKeyOfficialAccountPrefix, cfg.Cache)
+	defaultMustCacheAkHandle := credential.NewDefaultMustCacheAccessToken(cfg.AppID, cfg.AppSecret, credential.CacheKeyOfficialAccountPrefix, cfg.Cache)
+
 	ctx := &context.Context{
 		Config:            cfg,
 		AccessTokenHandle: defaultAkHandle,
+		MustCacheHandle:   defaultMustCacheAkHandle,
 	}
 	return &OfficialAccount{ctx: ctx}
 }

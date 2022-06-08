@@ -32,6 +32,16 @@ func NewDefaultJsTicket(appID string, cacheKeyPrefix string, cache cache.Cache) 
 	}
 }
 
+// NewDefaultMustCacheJsTicket new
+func NewDefaultMustCacheJsTicket(appID string, cacheKeyPrefix string, cache cache.Cache) MustCacheJsTicketHandle {
+	return &DefaultJsTicket{
+		appID:           appID,
+		cache:           cache,
+		cacheKeyPrefix:  cacheKeyPrefix,
+		jsAPITicketLock: new(sync.Mutex),
+	}
+}
+
 // ResTicket 请求jsapi_tikcet返回结果
 type ResTicket struct {
 	util.CommonError

@@ -28,6 +28,7 @@ func NewJs(context *context.Context) *Js {
 	js := new(Js)
 	js.Context = context
 	jsTicketHandle := credential.NewDefaultJsTicket(context.AppID, credential.CacheKeyOfficialAccountPrefix, context.Cache)
+	js.MustCacheJsTicketHandle = credential.NewDefaultMustCacheJsTicket(context.AppID, credential.CacheKeyOfficialAccountPrefix, context.Cache)
 	js.SetJsTicketHandle(jsTicketHandle)
 	return js
 }

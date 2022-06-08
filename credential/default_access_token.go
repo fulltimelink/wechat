@@ -46,6 +46,20 @@ func NewDefaultAccessToken(appID, appSecret, cacheKeyPrefix string, cache cache.
 	}
 }
 
+// NewDefaultMustCacheAccessToken new DefaultAccessToken
+func NewDefaultMustCacheAccessToken(appID, appSecret, cacheKeyPrefix string, cache cache.Cache) MustCacheHandle {
+	if cache == nil {
+		panic("cache is ineed")
+	}
+	return &DefaultAccessToken{
+		appID:           appID,
+		appSecret:       appSecret,
+		cache:           cache,
+		cacheKeyPrefix:  cacheKeyPrefix,
+		accessTokenLock: new(sync.Mutex),
+	}
+}
+
 // ResAccessToken struct
 type ResAccessToken struct {
 	util.CommonError
